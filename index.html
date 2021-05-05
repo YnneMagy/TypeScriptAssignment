@@ -4,13 +4,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>2048</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="./src/index.ts">
 </head>
 
 <body>
-    <my-beispiel></my-beispiel>
     <script defer src="./build/bundle.js"></script>
-    <input type="text" id="myInput" />
+    <h1>2048</h1>
+    <div class= "punktestand-container">
+        <div class= "aktuellerPunktestand">Punktestand</div>
+        <span id="punktestand">0</span>
+      </div>
+  
+      <div id="ergebnis"></div>
+  
+      <div class= "spielfeld"></div>
+
+      
+     
+      <div class="game">
+        <div id="tile-container" class="tile-container"></div>
+        <div class="end" id="end">Loser<div class="emoji">&#128128;</div>
+    
+      
+      <div class="not-recommended">
+        <button class="btn not-recommended__item js-restart-btn" id="nochmal">Nochmal</button>
+        <span class="not-recommended__annotation"></span>
+      </div>
 </body>
 
 </html>
