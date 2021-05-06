@@ -11,19 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
   
   
 
-//erstellung des Spielbrett von einem Javascript tutorial, es kamen viele fehlermeldungen, musste umschreiben
+// mein code ist mit EFP markiert
   function createBoard (){
  
        for (let i=0; i<width*width; i++) {
           var square= document.createElement('div')
           square.innerHTML= String(0)       //0 als string wegen compiler weil innerhtml string ist
           // object possibly null--> klar machen das nicht null
-          if (spielfeldDisplay !=null ){
-            spielfeldDisplay.appendChild(square)
-          }
-
-          else{ 
-              window.alert("Error:/")
+          if (spielfeldDisplay !=null ){          //EFP
+            spielfeldDisplay.appendChild(square)  //EFP
+          }                                       //EFP
+          else{                                   //EFP
+              window.alert("Error:/")             //EFP
           }
               // else muss noch hin der error abfängt
           squares.push(square)
@@ -39,9 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function generate(){
 
       let randomNumber= Math.floor(Math.random()*squares.length)
-      if(squares[randomNumber].innerHTML== String(0)) {
+      if(squares[randomNumber].innerHTML== String(0)) {  // aus 0 wurden ""
           squares[randomNumber].innerHTML= String(2) //string statt number
           checkForGameOver()
+          visControl()
       } else generate()
   }  
  
@@ -59,8 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let filteredRow= row.filter(num => num)
             //herrausfinden welche felder leer sind
             let missing = 4 - filteredRow.length
-            // leere Felder mir 0 füllen
-            let zeros= Array(missing).fill(0)
+            // leere Felder mit 0 füllen
+            let zeros= Array(missing).fill(0) 
+            
             let newRow= zeros.concat(filteredRow)
             
             squares[i].innerHTML= newRow[0]
@@ -91,7 +92,7 @@ function moveLeft(){
           //herrausfinden welche felder leer sind
           let missing= 4 - filteredRow.length
           // leere Felder mir 0 füllen
-          let zeros= Array(missing).fill(0)
+          let zeros= Array(missing).fill(0) 
          
           let newRow = filteredRow.concat(zeros)
           
@@ -118,7 +119,7 @@ function moveLeft(){
           //herrausfinden welche felder leer sind
           let missing= 4 - filteredColumn.length
           // leere Felder mir 0 füllen
-          let zeros= Array(missing).fill(0)
+          let zeros= Array(missing).fill(0) //hier war eine Null(0)  kein 'null'drin
           let newColumn=zeros.concat(filteredColumn)
 
           squares[i].innerHTML= newColumn[0]
@@ -140,7 +141,7 @@ function moveLeft(){
 
       let filteredColumn = column.filter(num => num)
       let missing = 4 - filteredColumn.length
-      let zeros = Array(missing).fill(0)
+      let zeros = Array(missing).fill(0) 
       let newColumn = filteredColumn.concat(zeros)
 
       squares[i].innerHTML = newColumn[0]
@@ -162,7 +163,7 @@ function moveLeft(){
           if(punktestandDisplay!=null){                   //EFP weil compiler sagt könnte nein sein
             punktestandDisplay.innerHTML = String(score)  //EFP
           }else{                                          //EFP
-            window.alert("Error:/")
+            window.alert("Error:/")                       //EFP
           }
     }
   }
@@ -177,11 +178,11 @@ function moveLeft(){
           squares[i].innerHTML= combinedTotal
           squares[i+width].innerHTML = 0
           score += combinedTotal
-        if(punktestandDisplay!=null){
-          punktestandDisplay.innerHTML = String(score)
-        }
-        else{
-          window.alert("Error:/")
+        if(punktestandDisplay!=null){                             //EFP
+          punktestandDisplay.innerHTML = String(score)            //EFP
+        }                                                         //EFP
+        else{                                                     //EFP
+          window.alert("Error:/")                                 //EFP
         }
 
       }
@@ -242,11 +243,11 @@ function keyUp(){
       for( let i = 0; i <squares.length; i++ ){
           if(squares[i].innerHTML==2048){
               //ergebnisDisplay.innerHTML="Glückwunsch!"
-              if(ergebnisDisplay!= null){
-                ergebnisDisplay.innerHTML = 'Glückwunsch! Du hast gewonnen!'
-                document.removeEventListener('keyup', control)
-              } else{
-                window.alert("Error, ErgebnisDisplay is null!")     
+              if(ergebnisDisplay!= null){                                     //EFP
+                ergebnisDisplay.innerHTML = 'Glückwunsch! Du hast gewonnen!'  //EFP
+                document.removeEventListener('keyup', control)                //EFP
+              } else{                                                         //EFP
+                window.alert("Spielende")                                    //EFP
               }
           }
       }
@@ -266,14 +267,74 @@ function keyUp(){
       if (ergebnisDisplay != null ) {
         ergebnisDisplay.innerHTML="Looser!"
         document.removeEventListener('keyup', control)
+      }else{
+        window.alert("Spielende")
       }
 
-      else{ 
-        window.alert("Error:/")
-      }
     }
   } 
 
+  //Eigencode
+  //controling visibility. Set at generate function
+  function visControl(){
+    for(let i=0; i<16; i++){
+      if(i % 4 === 0){
 
-}
-)
+        if(squares[i].innerHTML === "0"){
+          squares[i].style.color = "#5F816B"
+        }else{
+          squares[i].style.color = 'black'
+        }
+
+        if(squares[i+1].innerHTML === "0"){
+          squares[i+1].style.color = "#5F816B"
+        }else{
+          squares[i+1].style.color = 'black'
+        }
+
+        if(squares[i+2].innerHTML === "0"){
+          squares[i+2].style.color = "#5F816B"
+        }else{
+          squares[i+2].style.color = 'black'
+        }
+
+        if(squares[i+3].innerHTML === "0"){
+          squares[i+3].style.color = "#5F816B"
+        }else{
+          squares[i+3].style.color = 'black'
+        }
+      }
+    }
+  }
+
+
+  function restart(){
+    for(let i=0; i<16; i++){
+      if(i % 4 === 0){
+        for(let i=0; i<16; i++){
+          if(i % 4 === 0){
+
+              squares[i].innerHTML = String(0)
+              squares[i+1].innerHTML = String(0)
+              squares[i+2].innerHTML = String(0)
+              squares[i+3].innerHTML = String(0)
+              score = 0
+              punktestandDisplay.innerHTML = String(0)
+          }
+        }
+      }
+    }
+    visControl()
+    generate()
+    generate()
+  }
+
+
+  let restartBTN = document.getElementById('restart');
+  if(restartBTN != null)
+  restartBTN.addEventListener ('click', restart, true);
+
+ 
+    
+  
+})
