@@ -1,245 +1,245 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const spielfeldDisplay= document.querySelector(".spielfeld");
-  const punktestandDisplay= document.getElementById("punktestand");
-  const ergebnisDisplay= document.getElementById("ergebnis");
-  let zellen: any[]=[];
-  const width: number= 4;
-  let nichtda: number;
-  let zelle: any = document.createElement('div');
+  const spielfeldDisplay= document.querySelector('.spielfeld');
+  const punktestandDisplay= document.getElementById('punktestand');
+  const ergebnisDisplay= document.getElementById('ergebnis');
+  let squares: [];
+  const width: 4;
+  let score= 0;
+  
   
   
 
 //erstellung des Spielbrett von einem Javascript tutorial, es kamen viele fehlermeldungen, musste umschreiben
-  function createSpielfeld (): void{
+  function createBoard (){
  
        for (let i=0; i< width*width; i++) {
-          let zelle: any = document.createElement('div')
-          zelle.innerHTML=0
+          var square= document.createElement('div')
+          square.innerHTML= String (0)
           // object possibly null--> klar machen das nicht null
-          if (spielfeldDisplay != null )
-          {spielfeldDisplay.appendChild(zelle)}
+          if (spielfeldDisplay !=null )
+          {spielfeldDisplay.appendChild(square)}
 
           else{ 
               window.alert("Error:/")
           }
               // else muss noch hin der error abfängt
-          zellen.push(zelle)
+          squares.push(square)
       } 
       generate()
       generate()
   }     
-  createSpielfeld()
+  createBoard()
 
 
 
   //zufällige zahl erstellen 
-  function generate():void {
+  function generate(){
 
-      let randomZahl= Math.floor(Math.random()*zellen.length);
-      if(zellen [randomZahl].innerHTML==0) {
-
-          zellen[randomZahl].innerHTML=2
-
-          //verloren()
+      let randomNumber= Math.floor(Math.random()*squares.length)
+      if(squares[randomNumber].innerHTML== String(0)) {
+          squares[randomNumber].innerHTML= String(2)
+          checkForGameOver()
       } else generate()
-  }   
+  }  
+ 
   //nach rechts wischen
-  function rechtsWisch():void{
+  function moveRight(){
 
-    for( let i=0;i<16;i++){
-        if (i %4===4){
-            let eins = zellen[i].innerHTML
-            let zwei = zellen[i+1].innerHTML
-            let drei= zellen[i+2].innerHTML
-            let vier= zellen[i+3].innerHTML
-            let reihe= [parseInt(eins),parseInt(zwei),parseInt(drei),parseInt(vier)]
+    for(let i=0;i<16;i++){
+        if (i % 4===0){
+            let totalOne = squares[i].innerHTML
+            let totalTwo = squares[i+1].innerHTML
+            let totalThree= squares[i+2].innerHTML
+            let totalFour= squares[i+3].innerHTML
+            let row= [parseInt(totalOne),parseInt(totalTwo),parseInt(totalThree),parseInt(totalFour)]
 
            
             // nummern bewegen
-            let filterReihe= reihe.filter(number => number)
+            let filteredRow= row.filter(num => num)
             
             //herrausfinden welche felder leer sind
-            let leeresFeld= 4- filterReihe.length
+            let missing= 4 - filteredRow.length
             // leere Felder mir 0 füllen
-            let nullen= Array(nichtda).fill(0)
-            if (nullen!= null) {
-
-            }
-      
-         
-            let neueReihe= nullen.concat(filterReihe)
+            let zeros= Array(missing).fill(0)
+           
+            let newRow= zeros.concat(filteredRow)
             
-            zellen[i].innerHTML= neueReihe[0]
-            zellen[i+1].innerHTML= neueReihe[1]
-            zellen[i+2].innerHTML = neueReihe[2]
-            zellen[i+3].innerHTML = neueReihe[3]
+            squares[i].innerHTML= newRow[0]
+            squares[i+1].innerHTML= newRow[1]
+            squares[i+2].innerHTML = newRow[2]
+            squares[i+3].innerHTML = newRow[3]
             
 
 
         }
     }
-} rechtsWisch()
+} //rechtsWisch()
 // nach links wischen
 
-function linksWisch():void{
+function moveLeft(){
 
   for( let i=0;i<16;i++){
-      if (i %4===4){
+      if (i % 4===0){
 
-          let eins = zellen[i].innerHTML
-          let zwei = zellen[i+1].innerHTML
-          let drei= zellen[i+2].innerHTML
-          let vier= zellen[i+3].innerHTML
-          let reihe= [parseInt(eins),parseInt(zwei),parseInt(drei),parseInt(vier)]
+          let totaleins = squares[i].innerHTML
+          let totalTwo = squares[i+1].innerHTML
+          let totalThree= squares[i+2].innerHTML
+          let totalFour= squares[i+3].innerHTML
+          let row= [parseInt(totaleins),parseInt(totalTwo),parseInt(totalThree),parseInt(totalFour)]
 
           
           // nummern bewegen
-          let filterReihe= reihe.filter(number => number)
+          let filteredRow= row.filter(num => num)
           
           //herrausfinden welche felder leer sind
-          let leeresFeld= 4- filterReihe.length
+          let missing= 4 - filteredRow.length
           // leere Felder mir 0 füllen
-          let nullen= Array(nichtda).fill(0)
+          let zeros= Array(missing).fill(0)
          
-          let neueReihe= nullen.concat(nullen)
+          let newRow= zeros.concat(zeros)
           
-          zellen[i].innerHTML= neueReihe[0]
-          zellen[i+1].innerHTML= neueReihe[1]
-          zellen[i+2].innerHTML = neueReihe[2]
-          zellen[i+3].innerHTML = neueReihe[3]
-  
-
+          squares[i].innerHTML= newRow[0]
+          squares[i+1].innerHTML= newRow[1]
+          squares[i+2].innerHTML = newRow[2]
+          squares[i+3].innerHTML = newRow[3]
       }
   }
 } 
+
 // nach unten wischen 
-  function untenWisch(): void{
+  function moveDown(){
       for( let i=0; i<4;i++){
-          let eins= zellen[i].innerHTML
-          let zwei= zellen[i+width].innerHTML
-          let drei=zellen[i+(2*width)].innerHTML
-          let vier= zellen[i+(3*width)].innerHTML
-          let spalte= [parseInt(eins),parseInt(zwei), parseInt(drei), parseInt(vier)]
+          let totalOne= squares[i].innerHTML
+          let totalTwo= squares[i+width].innerHTML
+          let totalThree=squares[i+(width*2)].innerHTML
+          let totalFour= squares[i+(width*3)].innerHTML
+          let column= [parseInt(totalOne),parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)]
 
           //nummer bewegen 
-          let filterSpalte= spalte.filter(number=> number)
+          let filteredColumn= column.filter(num=> num)
           //herrausfinden welche felder leer sind
-          let leeresFeld= 4- filterSpalte.length
+          let missing= 4 - filteredColumn.length
           // leere Felder mir 0 füllen
-          let nullen= Array(nichtda).fill(0)
+          let zeros= Array(missing).fill(0)
 
-          let neueSpalte=nullen.concat(filterSpalte)
+          let newColumn=zeros.concat(filteredColumn)
 
-          zellen[i].innerHTML= neueSpalte[0]
-          zellen[i+width].innerHTML= neueSpalte[1]
-          zellen[i+(2*width)].innerHTML = neueSpalte[2]
-          zellen[i+(3*width)].innerHTML = neueSpalte[3]
-  
-  
+          squares[i].innerHTML= newColumn[0]
+          squares[i+width].innerHTML= newColumn[1]
+          squares[i+(2*width)].innerHTML = newColumn[2]
+          squares[i+(3*width)].innerHTML = newColumn[3]
     }
 
   }
 
   //nach oben wischen 
-  function hochWisch(): void{
+  function moveUp(){
       for(let i=0; i<4;i++){
-          let eins= zellen[i].innerHTML
-          let zwei= zellen[i+width].innerHTML
-          let drei=zellen[i+(2*width)].innerHTML
-          let vier= zellen[i+(3*width)].innerHTML
-          let spalte= [parseInt(eins),parseInt(zwei), parseInt(drei), parseInt(vier)]
+          let totalOne= squares[i].innerHTML
+          let totalTwo= squares[i+width].innerHTML
+          let totalThree=squares[i+(width*2)].innerHTML
+          let totalFour= squares[i+(width*2)].innerHTML
+          let column= [parseInt(totalOne),parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)]
 
           //nummer bewegen 
-          let filterSpalte= spalte.filter(number=> number)
+          let filteredColumn= column.filter(num=> num)
           //herrausfinden welche felder leer sind
-          let leeresFeld= 4- filterSpalte.length
+          let missing= 4 -filteredColumn.length
           // leere Felder mir 0 füllen
-          let nullen= Array(nichtda).fill(0)
+          let zeros= Array(missing).fill(0)
+          let newColumn= filteredColumn.concat(zeros)
 
-          let neueSpalte= filterSpalte.concat(nullen)
-
-          zellen[i].innerHTML= neueSpalte[0]
-          zellen[i+width].innerHTML= neueSpalte[1]
-          zellen[i+(2*width)].innerHTML = neueSpalte[2]
-          zellen[i+(3*width)].innerHTML = neueSpalte[3]
+          squares[i].innerHTML= newColumn[0]
+          squares[i+width].innerHTML= newColumn[1]
+          squares[i+(width*2)].innerHTML = newColumn[2]
+          squares[i+(width*3)].innerHTML = newColumn[3]
       }
 
 }
-
-
 
 
 // 2 gleiche nummern nebeneinander verschmelzen
 
-  function verschmelzenReihe():void{
+  function combineRow(){
   for(let i=0; i<15; i++){
-      if (zellen[i].innerHTML=== zellen[i+1].innerHTML){
-          let verschmelzendeZahl= parseInt (zellen[i].innerHTML)+parseInt (zellen[i+1].innerHTML)
-          zellen[i].innerHTML= verschmelzendeZahl
-          zellen[i+1].innerHTML=0
-
+      if (squares[i].innerHTML=== squares[i+1].innerHTML){
+          let combinedTotal= parseInt (squares[i].innerHTML)+parseInt (squares[i+1].innerHTML)
+          squares[i].innerHTML= combinedTotal
+          squares[i+1].innerHTML=0
+          score += combinedTotal
+          if(punktestandDisplay!=null){
+            punktestandDisplay.innerHTML = String(score)
+          }else{
+            window.alert("Error: PunktestandDisplay is null!")
+          }
       }
   }
-  gewonnen()
+  checkForWin()
 }
 
 
-  function verschmelzenSpalte():void{
+  function combineColumn(){
   for(let i=0; i<12; i++){
-      if (zellen[i].innerHTML=== zellen[i+width].innerHTML){
-          let verschmelzendeZahl= parseInt (zellen[i].innerHTML)+parseInt (zellen[i+width].innerHTML)
-          zellen[i].innerHTML= verschmelzendeZahl
-          zellen[i+width].innerHTML=0
+      if (squares[i].innerHTML=== squares[i+width].innerHTML){
+          let combinedTotal= parseInt (squares[i].innerHTML)+parseInt (squares[i+width].innerHTML)
+          squares[i].innerHTML= combinedTotal
+          squares[i+width].innerHTML=0
+          score += combinedTotal
+        if(punktestandDisplay!=null){
+          punktestandDisplay.innerHTML = String(score)
+        }else{
+          window.alert("Error: PunktestandDisplay is null!")
+        }
 
       }
   }
-  gewonnen()
+  checkForWin()
 }
 // Steuerung
-function steuerung(e: { keyCode: number; }) {
+function control (e: /*{ keyCode: number; }*/) {
   if(e.keyCode ===39){
-      rechts()
+    keyRight()
   }
   else if(e.keyCode ===37){
-      links()
+    keyLeft()
   }
   else if (e.keyCode===38){
-      hoch()
+    keyUp() 
   }
   else if (e.keyCode===40){
-      unten()
+    keyDown()  
   }
 
-  document.addEventListener("keyup", steuerung)
+  document.addEventListener('keyup', control)
 }   
 
-function rechts():void{
-  rechtsWisch()
-  verschmelzenReihe()
-  rechtsWisch()
+function keyRight(){
+  moveRight()
+  combineRow()
+  moveRight()
   generate()
 }
 
-function links():void{
-  linksWisch()
-  verschmelzenReihe()
-  linksWisch()
+function keyLeft(){
+  moveLeft()
+  combineRow()
+  moveLeft()
   generate()
 }
 
-function unten():void{
-  untenWisch()
-  verschmelzenSpalte()
-  untenWisch()
+function keyDown(){
+  moveDown()
+  combineColumn()
+  moveDown()
   generate()
 }
 
-function hoch():void{
-      hochWisch()
-      verschmelzenReihe()
-      hochWisch()
+function keyUp(){
+      moveUp()
+      combineRow()
+      moveUp()
       generate()
 }
   //checken ob gewonnen oder verloren
@@ -247,44 +247,38 @@ function hoch():void{
   // ist zahl 2048 da
 
 
-  function gewonnen():void{
-      for( let i = 0; i <length; i++ ){
-          if(zellen[i].innerHTML==2048){
+  function checkForWin(){
+      for( let i = 0; i <squares.length; i++ ){
+          if(squares[i].innerHTML==2048){
               //ergebnisDisplay.innerHTML="Glückwunsch!"
-               document.removeEventListener("keyup", steuerung)
+              if(ergebnisDisplay!= null){
+                ergebnisDisplay.innerHTML = 'Glückwunsch! Du hast gewonnen!'
+                document.removeEventListener('keyup', control)
+              } else{
+                window.alert("Error, ErgebnisDisplay is null!")     
       }
   }
 }
 
- function verloren():void{
+ function checkForGameOver(){
 
-     let nullen= null
-     for (let i=0; i<zellen.length; i++){
-        if(zellen[i].innerHTML==0){
-            nullen ++
-          // nullen ist possibly null--> sagen das es nicht null ist
-            if (nullen != null ) {
-              console.error();
-            } else {window.alert("Error:/")}
-
-             
+     let zeros= 0;
+     for (let i=0; i<squares.length; i++){
+        if(squares[i].innerHTML==0){
+            zeros ++     
        }
      }
-     if (nullen===0){
+     if (zeros===0){
+
+      if (ergebnisDisplay != null ) {
         ergebnisDisplay.innerHTML="Looser!"
-
-          if (ergebnisDisplay != null ) {
-            ergebnisDisplay.appendChild(zelle)}
-
-          else{ 
-            window.alert("Error:/")
-        }
-        document.removeEventListener("keyup", steuerung)
-
+        document.removeEventListener('keyup', control)
       }
-  
 
-//} 
-
-
-    } )
+      else{ 
+        window.alert("Error:/")
+    }
+  }
+} 
+}
+)
