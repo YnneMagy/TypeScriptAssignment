@@ -1,16 +1,39 @@
-.spielfeld {
-  display: flex;
-  flex-wrap: wrap;
-  width: 400px;
-  height: 400px;
-  background-color: blue;
+html.body{
+  
 }
 
-.spielfeld div{
-  width: 100px;
-  height: 100px;
-  background-color: yellow;
-  font-size: 60px;
-  text-align: center;
-  font-weight: bold;
-}
+.spielfeld {
+    width: 400px;
+    height: 400px;
+    background-color: #ffd6f5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Grand Hotel', cursive;
+    font-family: 'Oi', cursive;
+    
+  
+  }
+  .spielfeld div {
+    width: 100px;
+    height: 100px;
+    background-color: #5F816B;
+    font-size: 60px;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Grand Hotel', cursive;
+    position: center;
+    
+  }
+ 
+  .punktestand-container{
+      color: #59548C;
+      background-color: azure;
+
+  }
+  
+  .ergebnisDisplay{
+    font-family: 'Grand Hotel', cursive;
+    border: 1px;
+  }
