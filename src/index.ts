@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const spielfeldDisplay= document.querySelector('.spielfeld')
   const punktestandDisplay= document.getElementById('punktestand')
-  const ergebnisDisplay= document.getElementById('ergebnis')
+  const ergebnisDisplay = document.getElementById('ergebnis')
   let squares= []
-  const width= 4
-  let score= 0
+  const width = 4 // number oder string funktioniert nicht 
+  let score= 0 
   
   
-  
+  //wenn ich den variablen einen wert zuweise will das ganze spiel nicht mehr :(
 
 // mein code ist mit EFP markiert
   function createBoard (){
@@ -75,15 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // nach links wischen
 
 function moveLeft(){
-
   for(let i=0;i<16;i++){
       if (i % 4 === 0){
 
-          let totalOne = squares[i].innerHTML
+          let totalOne= squares[i].innerHTML
           let totalTwo = squares[i+1].innerHTML
           let totalThree= squares[i+2].innerHTML
           let totalFour= squares[i+3].innerHTML
-          let row= [parseInt(totalOne),parseInt(totalTwo),parseInt(totalThree),parseInt(totalFour)]
+          let row = [parseInt(totalOne),parseInt(totalTwo),parseInt(totalThree),parseInt(totalFour)]
 
           
           // nummern bewegen
@@ -103,7 +102,7 @@ function moveLeft(){
         }
     }
   }
- 
+
 
 // nach unten wischen 
   function moveDown(){
@@ -119,7 +118,7 @@ function moveLeft(){
           //herrausfinden welche felder leer sind
           let missing= 4 - filteredColumn.length
           // leere Felder mir 0 füllen
-          let zeros= Array(missing).fill(0) //hier war eine Null(0)  kein 'null'drin
+          let zeros= Array(missing).fill(0) 
           let newColumn=zeros.concat(filteredColumn)
 
           squares[i].innerHTML= newColumn[0]
@@ -160,15 +159,16 @@ function moveLeft(){
           squares[i].innerHTML= combinedTotal
           squares[i+1].innerHTML= 0
           score += combinedTotal
-          if(punktestandDisplay!=null){                   //EFP weil compiler sagt könnte nein sein
+
+          if(punktestandDisplay!=null){                   //EFP weil compiler sagt könnte null sein
             punktestandDisplay.innerHTML = String(score)  //EFP
           }else{                                          //EFP
             window.alert("Error:/")                       //EFP
           }
+      }
     }
+      checkForWin()
   }
-  checkForWin()
-}
 
 
   function combineColumn(){
@@ -178,6 +178,7 @@ function moveLeft(){
           squares[i].innerHTML= combinedTotal
           squares[i+width].innerHTML = 0
           score += combinedTotal
+
         if(punktestandDisplay!=null){                             //EFP
           punktestandDisplay.innerHTML = String(score)            //EFP
         }                                                         //EFP
@@ -210,6 +211,7 @@ function moveLeft(){
 function keyRight(){
   moveRight()
   combineRow()
+  myPlaykey() //EFP
   moveRight()
   generate()
 }
@@ -217,6 +219,7 @@ function keyRight(){
 function keyLeft(){
   moveLeft()
   combineRow()
+  myPlaykey() //EFP
   moveLeft()
   generate()
 }
@@ -224,6 +227,7 @@ function keyLeft(){
 function keyDown(){
   moveDown()
   combineColumn()
+  myPlaykey() //EFP
   moveDown()
   generate()
 }
@@ -231,6 +235,7 @@ function keyDown(){
 function keyUp(){
       moveUp()
       combineColumn()
+      myPlaykey()  //EFP
       moveUp()
       generate()
 }
@@ -240,43 +245,51 @@ function keyUp(){
 
 
   function checkForWin(){
-      for( let i = 0; i <squares.length; i++ ){
-          if(squares[i].innerHTML==2048){
-              //ergebnisDisplay.innerHTML="Glückwunsch!"
-              if(ergebnisDisplay!= null){                                     //EFP
-                ergebnisDisplay.innerHTML = 'Glückwunsch! Du hast gewonnen!'  //EFP
-                document.removeEventListener('keyup', control)                //EFP
-              } else{                                                         //EFP
-                window.alert("Spielende")                                    //EFP
-              }
-          }
+    function myPlayWin(){               //sound function ist von mir
+      let audio = new Audio("win.wav");
+      audio.play();}
+    for(let i=0; i< squares.length; i++){
+      if(squares[i].innerHTML == 2048)
+      //EFP bzw das if/Else und der Sound
+      if(ergebnisDisplay!= null){
+        ergebnisDisplay.innerHTML = 'You win!'
+        myPlayWin()
+        document.removeEventListener('keyup', control)
+      } else{
+        window.alert("Error, ErgebnisDisplay is null!")
       }
+    }
   }
+
       
 
- function checkForGameOver(){
-
-     let zeros= 0;
-     for (let i=0; i<squares.length; i++){
-        if(squares[i].innerHTML==0){
-            zeros ++     
-       }
-     }
-     if (zeros===0){
-
-      if (ergebnisDisplay != null ) {
-        ergebnisDisplay.innerHTML="Looser!"
-        document.removeEventListener('keyup', control)
-      }else{
-        window.alert("Spielende")
+  function checkForGameOver(){
+    function myPlayLose(){              //EFP sound function ist von mir
+      let audio = new Audio("Lose.wav");
+      audio.play();
       }
-
+    let zeros = 0
+    for (let i=0; i<squares.length; i++){  
+      if(squares[i].innerHTML == 0){
+        zeros++
+      }
     }
-  } 
+    if(zeros === 0){
+      if(ergebnisDisplay!= null){       //If-bedingung ist von mir
+        ergebnisDisplay.innerHTML = 'Loser!'
+        document.removeEventListener('keyup', control)
+        myPlayLose()
+      }else{
+        window.alert("Error: ErgebnisDisplay is null!")
+      }
+    }
+  }
 
-  //Eigencode
-  //controling visibility. Set at generate function
-  function visControl(){
+
+
+  //Ab hier Eigencode
+  
+  function visControl(){    //um visibility zu steuern
     for(let i=0; i<16; i++){
       if(i % 4 === 0){
 
@@ -334,7 +347,9 @@ function keyUp(){
   if(restartBTN != null)
   restartBTN.addEventListener ('click', restart, true);
 
- 
-    
+  function myPlaykey(){
+    let audio = new Audio("key.wav");
+    audio.play();
+    }
   
 })
