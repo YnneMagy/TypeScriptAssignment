@@ -59,6 +59,7 @@ html,body{
     border: 1px;
     font-size:25px;
     margin: 0 auto;
+    text-align: center;
   }
   button{
     width:200px;
